@@ -48,18 +48,14 @@
             height: 100%;
             position: relative;
             z-index: 12;
-            /* УБИРАЕМ БЕЛЫЙ ФОН */
-            background: transparent;
         }
 
         .glass-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* УБИРАЕМ БЕЛЫЙ ФОН ЧЕРЕЗ BLEND MODE */
             mix-blend-mode: screen;
             filter: brightness(1.3) contrast(1.2);
-            background: transparent;
         }
 
         .beer-fill {
@@ -67,7 +63,7 @@
             bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 65%;
+            width: 70%;
             height: 0%;
             background: linear-gradient(to bottom, 
                 #FFD700 0%, 
@@ -77,9 +73,9 @@
                 #FF8C00 100%);
             transition: height 0.15s ease-out;
             z-index: 11;
-            border-radius: 0 0 8px 8px;
-            /* ТОЧНАЯ ФОРМА СТАКАНА */
-            clip-path: polygon(18% 0%, 82% 0%, 78% 100%, 22% 100%);
+            border-radius: 0 0 5px 5px;
+            /* СТАКАН РАСШИРЯЕТСЯ КВЕРХУ: шире сверху (10% и 90%), уже снизу (25% и 75%) */
+            clip-path: polygon(10% 0%, 90% 0%, 75% 100%, 25% 100%);
             box-shadow: 
                 0 0 30px rgba(255, 215, 0, 0.5),
                 inset 0 -10px 25px rgba(255, 140, 0, 0.8);
@@ -182,7 +178,8 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            padding-bottom: 10vh;
             position: relative;
             z-index: 20;
         }
