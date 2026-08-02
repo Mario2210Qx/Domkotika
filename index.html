@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Я сделал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            z-index: 100;
+            transition: opacity 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+        }
+
+        .glass-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 55vh;
+            z-index: 10;
+        }
+
+        .glass {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 500"><path d="M50,50 L250,50 L230,450 L70,450 Z" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M60,60 L240,60 L225,440 L75,440 Z" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/></svg>') no-repeat center;
+            background-size: contain;
+        }
+
+        .beer-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to bottom, #FFD700 0%, #FFA500 100%);
+            transition: height 0.1s;
+            opacity: 0.8;
+        }
+
+        .beer-stream {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 0;
+            background: linear-gradient(to bottom, #FFD700, #FFA500);
+            opacity: 0;
+            z-index: 5;
+            transition: height 0.1s, opacity 0.3s;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: relative;
+            z-index: 20;
+        }
+
+        .section-left {
+            justify-content: flex-start;
+        }
+
+        .section-right {
+            justify-content: flex-end;
+        }
+
+        .content {
+            max-width: 400px;
+            font-size: 1.5em;
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .content h2 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .button-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .repeat-btn {
+            padding: 20px 60px;
+            font-size: 1.5em;
+            background-color: #9B30FF;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .repeat-btn:hover {
+            transform: scale(1.1);
+            background-color: #8A2BE2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" id="header">я сделал</div>
+    
+    <div class="beer-stream" id="beerStream"></div>
+    
+    <div class="glass-container">
+        <div class="glass">
+            <div class="beer-level" id="beerLevel"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section section-left">
+            <div class="content">
+                <h2>Обо мне</h2>
+                <p>Я Вася и я пью «балтику 0»</p>
+            </div>
+        </div>
+
+        <div class="section section-right">
+            <div class="content">
+                <h2>Навыки</h2>
+                <p>Я люблю свою семью, хожу на работу и шью сумку из кожи</p>
+            </div>
+        </div>
+
+        <div class="section section-left">
+            <div class="content">
+                <h2>Контакты</h2>
+                <p>Тел: 6236</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="repeat-btn" id="repeatBtn">повтори</button>
+        </div>
+    </div>
+
+    <script>
+        const header = document.getElementById('header');
+        const beerLevel = document.getElementById('beerLevel');
+        const beerStream = document.getElementById('beerStream');
+        const repeatBtn = document.getElementById('repeatBtn');
+
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            
+            // Анимация шапки
+            header.style.opacity = 1 - scrollPercent * 3;
+            
+            // Анимация струи
+            if (scrollPercent > 0.05) {
+                beerStream.style.opacity = 1;
+                beerStream.style.height = (50 - scrollPercent * 50) + 'vh';
+            } else {
+                beerStream.style.opacity = 0;
+            }
+            
+            // Анимация уровня пива
+            beerLevel.style.height = (scrollPercent * 100) + '%';
+        });
+
+        repeatBtn.addEventListener('click', () => {
+            // Опорожняем стакан
+            beerLevel.style.height = '0%';
+            beerStream.style.opacity = '0';
+            beerStream.style.height = '0';
+            header.style.opacity = '1';
+            
+            // Возвращаемся наверх
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
