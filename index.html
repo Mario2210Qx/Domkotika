@@ -38,18 +38,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            height: 70vh;
+            width: 400px;
+            height: 60vh;
             z-index: 10;
         }
 
-        /* ПИВО - ТОЧНО ВНУТРИ СТАКАНА */
+        /* ПИВО */
         .beer-fill {
             position: absolute;
-            bottom: 12%;
+            bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 280px;
+            width: 260px;
             height: 0%;
             background: linear-gradient(to bottom, 
                 #FFD700 0%, 
@@ -59,8 +59,8 @@
                 #FF8C00 100%);
             transition: height 0.15s ease-out;
             z-index: 11;
-            /* Форма трапеции - шире сверху */
-            clip-path: polygon(12% 0%, 88% 0%, 78% 100%, 22% 100%);
+            /* ТОЧНАЯ ФОРМА СТАКАНА */
+            clip-path: polygon(20% 0%, 80% 0%, 73% 100%, 27% 100%);
             box-shadow: 
                 0 0 30px rgba(255, 215, 0, 0.6),
                 inset 0 -10px 25px rgba(255, 140, 0, 0.8);
@@ -80,20 +80,19 @@
             filter: blur(2px);
         }
 
-        /* СТАКАН - БОЛЬШОЙ НА ПЕРВОМ ПЛАНЕ */
+        /* СТАКАН - ПРОЗРАЧНЫЙ КОНТУР */
         .glass-image {
             width: 100%;
             height: 100%;
             position: relative;
             z-index: 12;
-        }
-
-        .glass-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            mix-blend-mode: screen;
-            filter: brightness(1.3) contrast(1.15);
+            /* Маска чтобы показать только контур */
+            -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><path d="M 80 60 L 320 60 L 293 540 L 107 540 Z" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round"/><path d="M 95 75 L 305 75 L 282 525 L 118 525 Z" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linejoin="round"/></svg>') no-repeat center;
+            mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><path d="M 80 60 L 320 60 L 293 540 L 107 540 Z" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round"/><path d="M 95 75 L 305 75 L 282 525 L 118 525 Z" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linejoin="round"/></svg>') no-repeat center;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            background: transparent;
+            opacity: 0.9;
         }
 
         .beer-stream {
@@ -211,9 +210,7 @@
     
     <div class="glass-wrapper">
         <div class="beer-fill" id="beerLevel"></div>
-        <div class="glass-image">
-            <img src="glass.png" alt="Стакан" id="glassImg">
-        </div>
+        <div class="glass-image"></div>
     </div>
 
     <div class="container">
