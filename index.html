@@ -43,39 +43,13 @@
             z-index: 10;
         }
 
-        .glass-image {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            z-index: 11;
-        }
-
-        .glass-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            /* УБИРАЕМ БЕЛЫЙ ФОН */
-            filter: brightness(1.2) contrast(1.1);
-        }
-
-        .beer-container {
+        /* ПИВО СЗАДИ */
+        .beer-fill {
             position: absolute;
             bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 68%;
-            height: 80%;
-            z-index: 12;
-            /* ОБРЕЗАЕМ ПИВО ПО ФОРМЕ СТАКАНА */
-            clip-path: polygon(12% 0%, 88% 0%, 82% 100%, 18% 100%);
-            overflow: hidden;
-        }
-
-        .beer-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            width: 70%;
             height: 0%;
             background: linear-gradient(to bottom, 
                 #FFD700 0%, 
@@ -84,11 +58,14 @@
                 #FF9500 70%, 
                 #FF8C00 100%);
             transition: height 0.15s ease-out;
+            z-index: 11;
+            border-radius: 0 0 10px 10px;
             box-shadow: 
-                inset 0 -10px 25px rgba(255, 140, 0, 0.9),
-                inset 0 0 20px rgba(255, 215, 0, 0.6),
-                inset -10px 0 15px rgba(255, 255, 255, 0.2),
-                inset 10px 0 15px rgba(255, 255, 255, 0.1);
+                0 0 30px rgba(255, 215, 0, 0.5),
+                inset 0 -10px 25px rgba(255, 140, 0, 0.8),
+                inset 0 0 20px rgba(255, 215, 0, 0.6);
+            /* Обрезаем по форме стакана */
+            clip-path: polygon(15% 0%, 85% 0%, 80% 100%, 20% 100%);
         }
 
         .beer-fill::before {
@@ -97,70 +74,41 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 20px;
-            /* БЛИК НА ПОВЕРХНОСТИ ПИВА */
+            height: 25px;
             background: linear-gradient(to bottom, 
-                rgba(255, 255, 255, 0.8) 0%, 
-                rgba(255, 255, 255, 0.4) 50%, 
-                rgba(255, 255, 255, 0.1) 100%);
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(255, 255, 255, 0.6) 50%, 
+                rgba(255, 255, 255, 0.2) 100%);
+            border-radius: 50% 50% 0 0;
         }
 
         .beer-fill::after {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 20%;
-            width: 60%;
-            height: 10px;
-            /* ДОПОЛНИТЕЛЬНЫЙ БЛИК */
-            background: radial-gradient(ellipse at center, 
-                rgba(255, 255, 255, 0.5) 0%, 
-                rgba(255, 255, 255, 0) 70%);
-            border-radius: 50%;
-            filter: blur(2px);
-        }
-
-        .foam {
-            position: absolute;
-            top: -25px;
-            left: 0;
-            width: 100%;
-            height: 35px;
-            background: linear-gradient(to bottom, 
-                rgba(255, 255, 255, 0.98) 0%, 
-                rgba(255, 255, 255, 0.9) 30%, 
-                rgba(255, 255, 255, 0.7) 100%);
-            border-radius: 50% 50% 5% 5%;
-            opacity: 0;
-            transition: opacity 0.5s;
-            filter: blur(1px);
-            box-shadow: 0 -2px 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .foam::before {
-            content: '';
-            position: absolute;
-            top: -8px;
+            top: -15px;
             left: 5%;
-            width: 25px;
-            height: 25px;
-            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 50%;
-            filter: blur(2px);
-            box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+            filter: blur(3px);
         }
 
-        .foam::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: 8%;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            filter: blur(2px);
-            box-shadow: -2px 2px 5px rgba(255, 255, 255, 0.4);
+        /* СТАКАН СПЕРЕДИ */
+        .glass-image {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 12;
+        }
+
+        .glass-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Делаем стакан прозрачнее чтобы было видно пиво */
+            opacity: 0.9;
+            filter: brightness(1.1) contrast(1.05);
         }
 
         .beer-stream {
@@ -206,11 +154,6 @@
         @keyframes streamShine {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
-        }
-
-        @keyframes foamBubble {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-2px) scale(1.05); }
         }
 
         .section {
@@ -286,13 +229,9 @@
     <div class="beer-stream" id="beerStream"></div>
     
     <div class="glass-wrapper">
+        <div class="beer-fill" id="beerLevel"></div>
         <div class="glass-image">
             <img src="glass.png" alt="Стакан" id="glassImg">
-        </div>
-        <div class="beer-container">
-            <div class="beer-fill" id="beerLevel">
-                <div class="foam" id="foam"></div>
-            </div>
         </div>
     </div>
 
@@ -328,7 +267,6 @@
         const beerLevel = document.getElementById('beerLevel');
         const beerStream = document.getElementById('beerStream');
         const repeatBtn = document.getElementById('repeatBtn');
-        const foam = document.getElementById('foam');
 
         window.addEventListener('scroll', () => {
             const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
@@ -345,22 +283,12 @@
             
             const beerHeight = Math.min(scrollPercent * 100, 85);
             beerLevel.style.height = beerHeight + '%';
-            
-            if (beerHeight > 15) {
-                foam.style.opacity = 1;
-                foam.style.animation = 'foamBubble 2.5s ease-in-out infinite';
-            } else {
-                foam.style.opacity = 0;
-                foam.style.animation = 'none';
-            }
         });
 
         repeatBtn.addEventListener('click', () => {
             beerLevel.style.height = '0%';
             beerStream.style.opacity = '0';
             beerStream.style.height = '0';
-            foam.style.opacity = '0';
-            foam.style.animation = 'none';
             header.style.opacity = '1';
             
             window.scrollTo({
