@@ -54,27 +54,32 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+            /* УБИРАЕМ БЕЛЫЙ ФОН - делаем его прозрачным на чёрном */
+            mix-blend-mode: screen;
+            filter: brightness(1.1);
         }
 
         .beer-fill {
             position: absolute;
-            bottom: 15%;
+            bottom: 12%;
             left: 50%;
             transform: translateX(-50%);
-            width: 65%;
+            width: 60%;
             height: 0%;
             background: linear-gradient(to bottom, 
-                rgba(255, 215, 0, 0.9) 0%, 
-                rgba(255, 165, 0, 0.85) 50%, 
-                rgba(255, 140, 0, 0.8) 100%);
+                rgba(255, 215, 0, 0.95) 0%, 
+                rgba(255, 165, 0, 0.9) 50%, 
+                rgba(255, 140, 0, 0.85) 100%);
             transition: height 0.1s;
             z-index: 12;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 8px 8px;
             box-shadow: 
                 inset 0 -5px 15px rgba(255, 140, 0, 0.8),
-                inset 0 0 10px rgba(255, 215, 0, 0.5);
+                inset 0 0 10px rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 165, 0, 0.3);
             overflow: hidden;
+            /* Пиво не выходит за пределы */
+            max-height: 75%;
         }
 
         .beer-fill::before {
@@ -83,9 +88,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 15px;
+            height: 12px;
             background: linear-gradient(to bottom, 
-                rgba(255, 255, 255, 0.6) 0%, 
+                rgba(255, 255, 255, 0.7) 0%, 
                 rgba(255, 255, 255, 0.2) 100%);
         }
 
@@ -238,18 +243,6 @@
         const beerLevel = document.getElementById('beerLevel');
         const beerStream = document.getElementById('beerStream');
         const repeatBtn = document.getElementById('repeatBtn');
-        const glassImg = document.getElementById('glassImg');
-
-        // Проверяем загрузку изображения
-        glassImg.onload = function() {
-            console.log('Стакан загружен');
-        };
-        
-        glassImg.onerror = function() {
-            console.log('Ошибка загрузки стакана');
-            // Если изображение не загрузилось, показываем контур
-            glassImg.style.display = 'none';
-        };
 
         window.addEventListener('scroll', () => {
             const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
@@ -266,18 +259,16 @@
                 beerStream.style.opacity = 0;
             }
             
-            // Анимация уровня пива (от 0% до 100%)
-            beerLevel.style.height = (scrollPercent * 100) + '%';
+            // Анимация уровня пива (от 0% до 100%, но не больше 75% высоты контейнера)
+            beerLevel.style.height = Math.min(scrollPercent * 100, 75) + '%';
         });
 
         repeatBtn.addEventListener('click', () => {
-            // Опорожняем стакан
             beerLevel.style.height = '0%';
             beerStream.style.opacity = '0';
             beerStream.style.height = '0';
             header.style.opacity = '1';
             
-            // Возвращаемся наверх
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
